@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.hide{display: none;}
+	</style>
+</head>
+<body>
+	<div>账号：<input type="text"></div>
+	<div>密码：<input type="password"></div>
+	<div class="yzm hide">验证码：<span id="idcode"></span></div>
+	<button>提交</button>
+	<script src='//cdn.bootcss.com/jquery/1.11.0/jquery.min.js'></script>
+	<script src='./javascripts/idcode.js'></script>
+	<script>
+		var user = {
+			username : 'snowinmay',
+			password : '12345678'
+		}
+		$.idcode.setCode();
+		checkCookie()
+		$('button').click(function(event) {
+			checkCookie()
+			var times = getCookie('times');
+			var timestamp = new Date().getTime();
+			var username = $('input[type="text"]').val()
+			var password = $('input[type="password"]').val()
+			if (username != user.username || password != user.password) {
+				setCookie(parseInt(times)+1,timestamp)
+			}
+			if (!$.idcode.validateCode()) {
+				alert("验证码错误！")
+				return false;
+			}
+		});
+		function getCookie(c_name)
+		{
+		if (document.cookie.length>0)
+		  {
+		  c_start=document.cookie.indexOf(c_name + "=")
+		  if (c_start!=-1)
+		    { 
+		    c_start=c_start + c_name.length+1 
+		    c_end=document.cookie.indexOf(";",c_start)
+		    if (c_end==-1) c_end=document.cookie.length
+		    return unescape(document.cookie.substring(c_start,c_end))
+		    } 
+		  }
+		return ""
+		}
+
+		function setCookie(ts,tp)
+		{
+			console.log(ts)
+			console.log(tp)
+			document.cookie="times=" +ts
+			document.cookie="timestamp=" +tp
+		}
+		function checkCookie(){
+			//24小时之后，times清零
+			//times大于3的时候出现验证码
+			var nowTimestamp = new Date().getTime()
+			var timestamp = getCookie('timestamp')
+			var times = getCookie('times')
+			console.log(nowTimestamp)
+			console.log(timestamp)
+			if ((nowTimestamp - timestamp) > 120000) {//86400000
+				times = 0;
+				document.cookie="times=0"
+			}
+			if (times >= 2) {
+				$('.yzm').removeClass('hide')
+			}
+			console.log(document.cookie)
+		}
+</script>
+</body>
+</html>

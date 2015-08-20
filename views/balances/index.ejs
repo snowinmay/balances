@@ -1,0 +1,109 @@
+<% include header.ejs %>
+<div class="container">
+	<div>
+		<h3 class="text-center">家庭收支明细</h3>
+  		<p class="pull-right">
+		  <a href="/balances/new" class="btn btn-success btn-sm">
+		  <span class="glyphicon glyphicon-plus" aria-hidden="true">新增</span>
+		  </a>
+		</p>
+	</div>
+	<table class="table table-bordered table-hover">
+	<colgroup>
+	<col width="20">
+	<col width="60">
+	<col width="20">
+	<col width="20">
+	<col width="20">
+	<col width="20">
+	<col width="20">
+	</colgroup>
+	<thead>
+	  <tr>
+	  	<th>编号</th>
+	  	<th>内容</th>
+	  	<th>金额</th>
+	  	<th>类型</th>
+	  	<th>来源</th>
+	  	<th>更新时间</th>
+	  	<th>操作</th>
+	  </tr>
+	 </thead>
+	 <tbody>
+	  
+	  <% for(var i=0; i<docs.length; i++) {%>
+	  <tr data-id="<%= docs[i]._id %>">
+		   <td><%= i+1 %></td>
+		  	<td><%= docs[i].content %></td>
+		  	<td><%= docs[i].price %></td>
+		  	<td>
+		  		<% if(docs[i].type) {%>
+				   收入
+				<% }else{ %>
+					支出
+				<% } %>	  
+		  	</td>
+		  	<td><%= docs[i].from %></td>
+		  	<td><%= moment(docs[i].createdAt).format('YYYY-MM-DD HH:mm:ss') %></td>
+		  	<td>
+		  		<a href="/balances/<%= docs[i]._id %>/edit" class="btn btn-primary btn-xs edit">
+			  	<span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+			  	</a>
+			  	<a href="lala" class="btn btn-danger btn-xs delete" data-toggle="modal"  data-text="确定要删除第[<%= i+1 %>]条记录？">
+			  	<span class="glyphicon glyphicon-trash" aria-hidden="true">删除</span>
+			  	</a>
+		  	</td>
+		  	</tr>
+		<% } %>
+	  
+	  </tbody>
+	</table>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除明细</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<script>
+$(function(){
+	$('.delete').click(function(){
+		var _this = $(this)
+		var balance_id = $(_this).parents('tr').attr('data-id')
+		$('#myModal').modal()
+		$('#myModal').on('shown.bs.modal', function (e) {
+		  $(this).find('.modal-body').text($(_this).data('text'))
+		})
+		$('#myModal').on('hidden.bs.modal', function (e) {
+		  $(this).find('.modal-body').text('')
+		})
+		$('#myModal').find('.btn-primary').unbind().bind('click',function(){
+			$.ajax({
+                url: 'balances/'+balance_id,
+                type: 'delete',
+                //dataType: 'json',
+                success: function(obj){
+                	if(obj.status == '1'){
+                		$('#myModal').modal('hide')
+                		$(_this).parents('tr').remove();
+                	}
+                }
+            })
+		})
+	})
+	
+})
+</script>
+<% include footer.ejs %>

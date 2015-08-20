@@ -1,0 +1,62 @@
+<% include header.ejs %>
+<div class="container">
+	<div class="clearfix">
+		<h3 class="text-center">编辑收支明细</h3>
+	</div>
+	<form class="form-horizontal" method="post" action="/balances/<%= doc._id %>">
+	<input type="hidden" name="_method" value="put">
+	  <div class="form-group">
+	    <label for="content" class="col-sm-2 control-label">内容</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="content" name="content" placeholder="" value='<%= doc.content %>'>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="price" class="col-sm-2 control-label">金额</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="price" name="price" placeholder="" value='<%= doc.price %>'>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="type" class="col-sm-2 control-label">类型</label>
+	    <div class="col-sm-10">
+	      <select id="type" class="form-control" name="type">
+	      	<% if(doc.type) {%>
+			   <option value="0">支出</option>
+	      		<option value="1" selected>收入</option>
+			<% }else{ %>
+			<option value="0" selected>支出</option>
+	      		<option value="1" >收入</option>
+			<% } %>	      	
+	      </select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="from" class="col-sm-2 control-label">来源</label>
+	    <div class="col-sm-10">
+	      <select id="from" class="form-control" name="from">
+	      <% if(doc.type == 'home') {%>
+			  <option value="home" selected>home</option>
+	      	<option value="prince">prince</option>
+	      	<option value="limi">limi</option>
+			<% }else if(doc.type == 'prince'){ %>
+			<option value="home" >home</option>
+	      	<option value="prince" selected>prince</option>
+	      	<option value="limi">limi</option>
+			<% }else{ %>
+			<option value="home" >home</option>
+	      	<option value="prince" >prince</option>
+	      	<option value="limi" selected>limi</option>
+			<% } %>	   
+	      	
+	      </select>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <button type="submit" class="btn btn-primary">修改</button>
+	    </div>
+	  </div>
+	</form>
+</div>
+<% include footer.ejs %>
