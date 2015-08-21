@@ -3,7 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var moment = require('moment');
 
-mongoose.connect('mongodb://localhost/balances',function(){
+mongoose.connect('mongodb://snowinmay:yujianqi2011@ds033133.mongolab.com:33133/prince-balances',function(){
+// mongoose.connect('mongodb://localhost/balances',function(){
 	console.log("Mongodb connected")
 })
 var Balance = mongoose.model('Balance', { 
