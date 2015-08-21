@@ -43,7 +43,7 @@
 				<% } %>	  
 		  	</td>
 		  	<td><%= docs[i].from %></td>
-		  	<td><%= moment(docs[i].createdAt).local().format('YYYY-MM-DD HH:mm:ss') %></td>
+		  	<td><%= moment(docs[i].createdAt).utc().zone(-8).format('YYYY-MM-DD HH:mm:ss') %></td>
 		  	<td>
 		  		<a href="/balances/<%= docs[i]._id %>/edit" class="btn btn-primary btn-xs edit">
 			  	<span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
