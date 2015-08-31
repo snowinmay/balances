@@ -1,4 +1,5 @@
 <% include header.ejs %>
+<script src="//cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.min.js"></script>
 <div class="container">
 	<div class="clearfix">
 		<h3 class="text-center">新增收支明细</h3>
@@ -36,10 +37,54 @@
 	    </div>
 	  </div>
 	  <div class="form-group">
+	    <label for="time" class="col-sm-2 control-label">时间</label>
+	    <div class="input-append date form_datetime col-sm-10">
+		    <input size="16" type="text" value="" readonly id="time" class="form-control" name="time">
+		    <span class="add-on"><i class="icon-remove"></i></span>
+		    <span class="add-on"><i class="icon-calendar"></i></span>
+		</div>
+	  </div>
+	  <div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
 	      <button type="submit" class="btn btn-primary">新增</button>
 	    </div>
 	  </div>
 	</form>
 </div>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 10
+    });
+    $().ready(function() {
+	 $(".form-horizontal").validate({
+	        rules: {
+	            content: {
+	                required: true
+	            },
+	            price: {
+	                required: true,
+	                number: true
+	            },
+	            time: {
+	                required: true
+	            }
+	        },
+	        messages: {
+	            content: {
+	               required:"<i class='glyphicon glyphicon-remove-sign'></i> 内容不能为空！"
+	            },
+	            price: {
+	                required:"<i class='glyphicon glyphicon-remove-sign'></i> 金额不能为空！"
+	            },
+	            time: {
+	            	required:"<i class='glyphicon glyphicon-remove-sign'></i> 时间不能为空！"
+	            }
+	        }});
+	});
+    
+</script>
 <% include footer.ejs %>
